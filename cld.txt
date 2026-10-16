@@ -1,0 +1,1550 @@
+git-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+Autho0:---------------------------------------------------------------------------------------------------
+1.application->application
+2.update the req settings
+3.copy paste a)inside autho run cmd1 
+
+dropbox---------------------------------------------------------------------------------------------------
+1.app and index files
+2.app folder
+3.3 ticks in permisiion - 3,5,6 and then generate key
+4.pip install flask dropbox / python -m pip install flask dropbox
+
+postman---------------------------------------------------------------------------------------------------
+testing:
+1.npm init -y
+	npm install express
+	node server.js
+
+2.server.js:
+	const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+let users = [
+    { id: 1, name: "Ashwin", age: 21 },
+    { id: 2, name: "Rahul", age: 22 }
+];
+
+// CREATE - Add a user
+app.post('/users', (req, res) => {
+    const user = {
+        id: users.length ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        name: req.body.name,
+        age: req.body.age
+    };
+
+    users.push(user);
+    res.status(201).json(user);
+});
+
+// READ - Get all users
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+// READ - Get a user by ID
+app.get('/users/:id', (req, res) => {
+    const user = users.find(u => u.id === Number(req.params.id));
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+});
+
+// UPDATE - Update a user
+app.put('/users/:id', (req, res) => {
+    const user = users.find(u => u.id === Number(req.params.id));
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.name = req.body.name ?? user.name;
+    user.age = req.body.age ?? user.age;
+
+    res.json({ message: "User updated", user });
+});
+
+// DELETE - Delete a user
+app.delete('/users/:id', (req, res) => {
+    const index = users.findIndex(u => u.id === Number(req.params.id));
+
+    if (index === -1) return res.status(404).json({ message: "User not found" });
+
+    users.splice(index, 1);
+    res.json({ message: "User deleted successfully" });
+});
+
+// Start server
+app.listen(3000, () => {
+    console.log("Server running at http://localhost:3000");
+});
+
+third-party API:
+1.apiurl
+2.apikey
+3.apininja
+
+
+mongodb------------------------------------------------------------------------------------------------------------------
+python --version
+pip --version
+python -m pip install notebook pymongo
+python -m notebook
+
+1.username & pass
+2.cluster connect - python,string copy
+3.data explorer
+
+code:
+# Step 1: Install packages
+!pip install pymongo certifi
+
+import certifi
+from pymongo import MongoClient
+
+# Step 2: Connect to MongoDB Cluster
+uri = "mongodb+srv://guest:LN4pH8R0GFIOpuAL@cluster0.b10bono.mongodb.net/?appName=Cluster0"
+client = MongoClient(uri, tlsCAFile=certifi.where())
+
+# Ping to verify connection
+client.admin.command("ping")
+print("Connected successfully!")
+
+# Step 3: Select Database and Collection
+db = client["ajay"]
+tasks = db["rohith"]
+print("Database: todo")
+print("Collection: task")
+
+# Step 4: Insert One Task
+task1 = {
+    "title": "Study Python",
+    "description": "Learn MongoDB CRUD",
+    "completed": False
+}
+result = tasks.insert_one(task1)
+print("Task inserted successfully!")
+print("Task ID:", result.inserted_id)
+
+# Step 5: Insert Many Tasks
+task_list = [
+    {
+        "title": "Complete assignment",
+        "description": "Finish lab record",
+        "completed": False
+    },
+    {
+        "title": "Learn MongoDB",
+        "description": "Practice queries",
+        "completed": True
+    },
+    {
+        "title": "Exercise",
+        "description": "Go to the gym",
+        "completed": False
+    }
+]
+result = tasks.insert_many(task_list)
+print("Number of tasks inserted:", len(result.inserted_ids))
+
+# Step 6: Display All Tasks
+print("\n--- All Tasks ---")
+for task in tasks.find():
+    print(task)
+
+# Step 7: Display Pending Tasks
+print("\n--- Pending Tasks ---")
+for task in tasks.find({"completed": False}):
+    print(task)
+
+# Step 8: Find One Particular Task
+print("\n--- Find Task 'Study Python' ---")
+task = tasks.find_one({"title": "Study Python"})
+print(task)
+
+# Step 9: Update Task Status
+result = tasks.update_one(
+    {"title": "Study Python"},
+    {"$set": {"completed": True}}
+)
+print("Matched:", result.matched_count)
+print("Modified:", result.modified_count)
+
+# Step 10: Display Updated Task
+print("\n--- Updated Task ---")
+print(tasks.find_one({"title": "Study Python"}))
+
+# Step 11: Delete One Task
+result = tasks.delete_one({"title": "Exercise"})
+print("\nTasks deleted:", result.deleted_count)
+
+# Step 12: Verify Task Deletion
+print(tasks.find_one({"title": "Exercise"}))
+
+# Step 13: Display Final Tasks
+print("\n--- Final Tasks in MongoDB ---")
+for task in tasks.find():
+    print(task)
+
+
+
+cloudsim---------------------------------------------------------------------------------------------------------------------------------------------cloudanalyst
+1.open eclipse
+2.windows->package explorer
+3.create new java project
+4.give name & remove default and keep cloudsim3.0
+5.go to examples. to the parent of 8 examples folder, right click
+6.new->class and then copy code
+
+code:
+package org.cloudbus.cloudsim.examples;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
+import org.cloudbus.cloudsim.Datacenter;
+import org.cloudbus.cloudsim.DatacenterBroker;
+import org.cloudbus.cloudsim.DatacenterCharacteristics;
+import org.cloudbus.cloudsim.Host;
+import org.cloudbus.cloudsim.Pe;
+import org.cloudbus.cloudsim.Storage;
+import org.cloudbus.cloudsim.UtilizationModelFull;
+import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.VmAllocationPolicySimple;
+import org.cloudbus.cloudsim.VmSchedulerTimeShared;
+import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
+import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
+import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
+
+public class ResourceAllocation {
+
+    public static void main(String[] args) {
+
+        try {
+            int numUsers = 1;
+            Calendar calendar = Calendar.getInstance();
+            boolean traceFlag = false;
+
+            // Initialize CloudSim
+            CloudSim.init(numUsers, calendar, traceFlag);
+
+            // Create datacenter and broker
+            Datacenter datacenter = createDatacenter("Datacenter_0");
+            DatacenterBroker broker =
+                    new DatacenterBroker("Broker");
+
+            int brokerId = broker.getId();
+
+            // Create 4 virtual machines
+            List<Vm> vmList = new ArrayList<>();
+
+            for (int i = 0; i < 4; i++) {
+                Vm vm = new Vm(
+                        i, brokerId, 1000, 1,
+                        1024, 1000, 10000,
+                        "Xen",
+                        new CloudletSchedulerTimeShared()
+                );
+
+                vmList.add(vm);
+            }
+
+            broker.submitVmList(vmList);
+
+            // Create 8 cloudlets (tasks)
+            List<Cloudlet> cloudletList = new ArrayList<>();
+
+            for (int i = 0; i < 8; i++) {
+                Cloudlet cloudlet = new Cloudlet(
+                        i, 40000, 1, 300, 300,
+                        new UtilizationModelFull(),
+                        new UtilizationModelFull(),
+                        new UtilizationModelFull()
+                );
+
+                cloudlet.setUserId(brokerId);
+                cloudletList.add(cloudlet);
+            }
+
+            broker.submitCloudletList(cloudletList);
+
+            // Start simulation
+            CloudSim.startSimulation();
+            CloudSim.stopSimulation();
+
+            // Display results
+            List<Cloudlet> resultList =
+                    broker.getCloudletReceivedList();
+
+            printCloudletResults(resultList);
+
+            System.out.println("\nSimulation completed successfully.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Create datacenter with 4 hosts
+    private static Datacenter createDatacenter(String name)
+            throws Exception {
+
+        List<Host> hostList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            List<Pe> peList = new ArrayList<>();
+
+            peList.add(new Pe(
+                    0, new PeProvisionerSimple(1000)
+            ));
+
+            Host host = new Host(
+                    i,
+                    new RamProvisionerSimple(2048),
+                    new BwProvisionerSimple(10000),
+                    1000000,
+                    peList,
+                    new VmSchedulerTimeShared(peList)
+            );
+
+            hostList.add(host);
+        }
+
+        DatacenterCharacteristics characteristics =
+                new DatacenterCharacteristics(
+                        "x86",
+                        "Linux",
+                        "Xen",
+                        hostList,
+                        10.0,
+                        3.0,
+                        0.05,
+                        0.001,
+                        0.0
+                );
+
+        return new Datacenter(
+                name,
+                characteristics,
+                new VmAllocationPolicySimple(hostList),
+                new LinkedList<Storage>(),
+                0
+        );
+    }
+
+    // Print cloudlet execution results
+    private static void printCloudletResults(
+            List<Cloudlet> list) {
+
+        System.out.println(
+                "\nCloudlet ID\tStatus\t\tDatacenter ID"
+                + "\tVM ID\tTime\tStart\tFinish"
+        );
+
+        for (Cloudlet cloudlet : list) {
+
+            if (cloudlet.getStatus() == Cloudlet.SUCCESS) {
+                System.out.println(
+                        cloudlet.getCloudletId()
+                        + "\t\tSUCCESS\t\t"
+                        + cloudlet.getResourceId()
+                        + "\t\t"
+                        + cloudlet.getVmId()
+                        + "\t"
+                        + cloudlet.getActualCPUTime()
+                        + "\t"
+                        + cloudlet.getExecStartTime()
+                        + "\t"
+                        + cloudlet.getFinishTime()
+                );
+            } else {
+                System.out.println(
+                        cloudlet.getCloudletId()
+                        + "\t\tFAILED"
+                );
+            }
+        }
+    }
+}
+
+
+spark---------------------------------------------------------------------------------------------------------------------------------------------
+sudo apt update && sudo apt install openjdk-17-jre python3-pip -y
+pip3 install pyspark
+
+echo "enter a long text here" > input.txt
+
+nano wordcount.py
+
+code: word count
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("WordCount").getOrCreate()
+sc = spark.sparkContext
+
+text_data = sc.textFile("input.txt")
+
+word_counts = text_data.flatMap(lambda line: line.split(" ")) \
+                       .map(lambda word: (word, 1)) \
+                       .reduceByKey(lambda a, b: a + b)
+
+for word, count in word_counts.collect():
+    print(f"{word}: {count}")
+
+spark.stop()
+
+python3 wordcount.py
+
+openmp & mpi----------------------------------------------------------------------------------------------------------------------------------------------------
+common:
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv build-essential
+sudo apt install -y openmpi-bin libopenmpi-dev
+sudo apt install -y python3-mpi4py
+
+
+MPI
+sudo apt update
+sudo apt install openmpi-bin libopenmpi-dev gcc
+
+nano mpi.c
+
+#include <stdio.h>
+#include <mpi.h>
+
+int main(int argc, char *argv[])
+{
+    int r, s;
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &r);
+    MPI_Comm_size(MPI_COMM_WORLD, &s);
+
+    printf("Hello from process %d of %d\n", r, s);
+
+    MPI_Finalize();
+    return 0;
+}
+
+mpicc mpi.c -o mpi
+mpirun -np 4 ./mpi
+
+
+-------------------------------------------------------------
+OPENMP
+sudo apt update
+sudo apt install gcc
+
+nano openmp.c
+
+#include <stdio.h>
+#include <omp.h>
+
+int main()
+{
+    int i;
+
+    #pragma omp parallel
+    {
+        printf("Hello from thread %d\n", omp_get_thread_num());
+    }
+
+    return 0;
+}
+
+gcc -fopenmp openmp.c -o openmp
+./openmp
+OMP_NUM_THREADS=4 ./openmp
+
+
+
+-------------------------------------------------------------------------------------------------------------
+firebase---------------------------------------------------------------------------------------------------------------------------------------------
+create and get into folder
+npm init -y
+npm install
+npm install firebase react-router-dom
+
+do the changes in firebase.
+keep lastline copy paste rest and export last three variables, remove first line
+
+npm run dev
+
+npm install -g firebase-tools
+firebase login
+
+firebase init hosting
+yes
+dist
+yes
+no
+yes
+no
+
+firebase login
+firebase deploy
+
+firebase use --add
+
+
+rules:
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/tasks/{taskId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function hasValidTaskData() {
+        return request.resource.data.keys().hasAll(['text', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['text', 'createdAt'])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 500
+          && request.resource.data.createdAt is timestamp;
+      }
+
+      allow read: if isOwner();
+      allow create: if isOwner() && hasValidTaskData();
+      allow update: if isOwner()
+        && hasValidTaskData()
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isOwner();
+    }
+  }
+}
+
+
+auth.jsx:
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+} from 'firebase/auth'
+import { app } from './firebase.js'
+
+export const auth = getAuth(app)
+
+const googleProvider = new GoogleAuthProvider()
+
+export async function signUpWithEmail(name, email, password) {
+  const credential = await createUserWithEmailAndPassword(auth, email, password)
+  await updateProfile(credential.user, { displayName: name })
+  return credential.user
+}
+
+export function signInWithEmail(email, password) {
+  return signInWithEmailAndPassword(auth, email, password)
+}
+
+export function signInWithGoogle() {
+  return signInWithPopup(auth, googleProvider)
+}
+
+export function signOutUser() {
+  return signOut(auth)
+}
+
+export function getAuthErrorMessage(error) {
+  switch (error?.code) {
+    case 'auth/email-already-in-use':
+      return 'An account already exists with this email. Try logging in.'
+    case 'auth/invalid-credential':
+    case 'auth/invalid-login-credentials':
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+      return 'The email or password is incorrect.'
+    case 'auth/invalid-email':
+      return 'Enter a valid email address.'
+    case 'auth/weak-password':
+      return 'Choose a password with at least 6 characters.'
+    case 'auth/popup-closed-by-user':
+      return 'The Google sign-in window was closed before sign-in finished.'
+    case 'auth/popup-blocked':
+      return 'Your browser blocked the sign-in popup. Allow popups and try again.'
+    case 'auth/operation-not-allowed':
+      return 'This sign-in method is not enabled in your Firebase project.'
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Wait a moment and try again.'
+    case 'auth/network-request-failed':
+      return 'A network error interrupted sign-in. Check your connection and try again.'
+    default:
+      return error?.message || 'Authentication failed. Please try again.'
+  }
+}
+
+firebase.js:
+import { getFirestore } from "firebase/firestore";
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC4rd_82kmVCE3TFnOh6RXX8r4vdFl-rOo",
+  authDomain: "ashwin-900d0.firebaseapp.com",
+  projectId: "ashwin-900d0",
+  storageBucket: "ashwin-900d0.firebasestorage.app",
+  messagingSenderId: "518725901780",
+  appId: "1:518725901780:web:bd5b00d3f1f6c67d0eca41",
+  measurementId: "G-1G3RMT09E3"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+export {app,analytics,db};
+
+App.jsx:
+import { useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
+import {
+  auth,
+  getAuthErrorMessage,
+  signInWithEmail,
+  signInWithGoogle,
+  signOutUser,
+  signUpWithEmail,
+} from './assets/auth.jsx'
+import { db } from './assets/firebase.js'
+import './auth.css'
+
+function GoogleIcon() {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5h6.6c3.9-3.6 6.1-8.8 6.1-14.9Z" />
+      <path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5c-1.8 1.2-4 2-6.9 2-5.3 0-9.8-3.6-11.4-8.5H5.8v5.2A20 20 0 0 0 24 44Z" />
+      <path fill="#FBBC05" d="M12.6 27.7a12 12 0 0 1 0-7.4v-5.2H5.8a20 20 0 0 0 0 17.8l6.8-5.2Z" />
+      <path fill="#EA4335" d="M24 11.8c3 0 5.7 1 7.8 3.1l5.8-5.8A19.4 19.4 0 0 0 24 4 20 20 0 0 0 5.8 15.1l6.8 5.2c1.6-4.9 6.1-8.5 11.4-8.5Z" />
+    </svg>
+  )
+}
+
+function App() {
+  const [user, setUser] = useState(null)
+  const [mode, setMode] = useState('signup')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [taskText, setTaskText] = useState('')
+  const [tasks, setTasks] = useState([])
+  const [editingTaskId, setEditingTaskId] = useState(null)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [taskLoading, setTaskLoading] = useState(false)
+
+  useEffect(() => {
+    let stopWatchingTasks = () => {}
+
+    const stopWatchingAuth = onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        stopWatchingTasks()
+        setUser(currentUser)
+        setTasks([])
+        setError('')
+
+        if (currentUser) {
+          const taskList = collection(db, 'users', currentUser.uid, 'tasks')
+
+          stopWatchingTasks = onSnapshot(
+            taskList,
+            (snapshot) => {
+              const savedTasks = snapshot.docs.map((taskDocument) => ({
+                id: taskDocument.id,
+                text: taskDocument.data().text,
+              }))
+              setTasks(savedTasks)
+            },
+            (taskError) => setError(getTaskErrorMessage(taskError)),
+          )
+        }
+      },
+      (authError) => setError(getAuthErrorMessage(authError)),
+    )
+
+    return () => {
+      stopWatchingAuth()
+      stopWatchingTasks()
+    }
+  }, [])
+
+  async function handleAccountSubmit(event) {
+    event.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      if (mode === 'signup') {
+        await signUpWithEmail(name.trim(), email.trim(), password)
+      } else {
+        await signInWithEmail(email.trim(), password)
+      }
+    } catch (authError) {
+      setError(getAuthErrorMessage(authError))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setError('')
+    setLoading(true)
+
+    try {
+      await signInWithGoogle()
+    } catch (authError) {
+      setError(getAuthErrorMessage(authError))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleSignOut() {
+    setError('')
+    setLoading(true)
+
+    try {
+      await signOutUser()
+    } catch (authError) {
+      setError(getAuthErrorMessage(authError))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function getTaskErrorMessage(taskError) {
+    if (taskError?.code === 'permission-denied') {
+      return 'Firebase denied access. Check that your Firestore rules are published.'
+    }
+    return taskError?.message || 'Could not load or save tasks.'
+  }
+
+  async function handleTaskSubmit(event) {
+    event.preventDefault()
+
+    const text = taskText.trim()
+    if (!text) {
+      setError('Please enter a task.')
+      return
+    }
+
+    setTaskLoading(true)
+
+    try {
+      if (editingTaskId !== null) {
+        const taskDocument = doc(db, 'users', user.uid, 'tasks', editingTaskId)
+        await updateDoc(taskDocument, { text: text })
+        setEditingTaskId(null)
+      } else {
+        const taskList = collection(db, 'users', user.uid, 'tasks')
+        await addDoc(taskList, {
+          text: text,
+          createdAt: serverTimestamp(),
+        })
+      }
+
+      setTaskText('')
+      setError('')
+    } catch (taskError) {
+      setError(getTaskErrorMessage(taskError))
+    } finally {
+      setTaskLoading(false)
+    }
+  }
+
+  function editTask(task) {
+    setTaskText(task.text)
+    setEditingTaskId(task.id)
+    setError('')
+  }
+
+  function cancelEdit() {
+    setTaskText('')
+    setEditingTaskId(null)
+    setError('')
+  }
+
+  async function deleteTask(taskId) {
+    setTaskLoading(true)
+
+    try {
+      const taskDocument = doc(db, 'users', user.uid, 'tasks', taskId)
+      await deleteDoc(taskDocument)
+
+      if (editingTaskId === taskId) {
+        setEditingTaskId(null)
+        setTaskText('')
+      }
+      setError('')
+    } catch (taskError) {
+      setError(getTaskErrorMessage(taskError))
+    } finally {
+      setTaskLoading(false)
+    }
+  }
+
+  return (
+    <main className="page">
+      {user ? (
+        <section className="card task-card">
+          <div className="card-heading">
+            <div>
+              <h1>My tasks</h1>
+              <p className="description">Signed in as {user.email}</p>
+            </div>
+            <button className="small-button" type="button" onClick={handleSignOut} disabled={loading}>
+              Sign out
+            </button>
+          </div>
+
+          <form className="task-form" onSubmit={handleTaskSubmit}>
+            <label htmlFor="task">Task</label>
+            <div className="task-input-row">
+              <input
+                id="task"
+                type="text"
+                placeholder="What do you need to do?"
+                value={taskText}
+                onChange={(event) => setTaskText(event.target.value)}
+                disabled={taskLoading}
+              />
+              <button className="button" type="submit" disabled={taskLoading}>
+                {taskLoading ? 'Saving…' : editingTaskId !== null ? 'Save' : 'Add'}
+              </button>
+              {editingTaskId !== null && (
+                <button className="small-button" type="button" onClick={cancelEdit}>
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+
+          {error && <p className="error" role="alert">{error}</p>}
+
+          {tasks.length === 0 && !taskLoading ? (
+            <p className="empty-message">No tasks yet. Add your first task above.</p>
+          ) : tasks.length > 0 && (
+            <ul className="task-list">
+              {tasks.map((task) => (
+                <li className="task-item" key={task.id}>
+                  <span>{task.text}</span>
+                  <div className="task-actions">
+                    <button className="small-button" type="button" onClick={() => editTask(task)} disabled={taskLoading}>
+                      Edit
+                    </button>
+                    <button className="small-button delete-button" type="button" onClick={() => deleteTask(task.id)} disabled={taskLoading}>
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ) : (
+        <section className="card signin-card">
+          <h1>{mode === 'signup' ? 'Create account' : 'Log in'}</h1>
+          <p className="description">
+            {mode === 'signup' ? 'Sign up to get started' : 'Welcome back'}
+          </p>
+
+          <div className="mode-switch">
+            <button
+              className={mode === 'signup' ? 'selected' : ''}
+              type="button"
+              onClick={() => { setMode('signup'); setError('') }}
+            >
+              Sign up
+            </button>
+            <button
+              className={mode === 'login' ? 'selected' : ''}
+              type="button"
+              onClick={() => { setMode('login'); setError('') }}
+            >
+              Log in
+            </button>
+          </div>
+
+          <form className="account-form" onSubmit={handleAccountSubmit}>
+            {mode === 'signup' && (
+              <label>
+                Name
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  required
+                  disabled={loading}
+                />
+              </label>
+            )}
+            <label>
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+                disabled={loading}
+              />
+            </label>
+            <label>
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                minLength={6}
+                required
+                disabled={loading}
+              />
+            </label>
+            <button className="button" type="submit" disabled={loading}>
+              {loading ? 'Please wait…' : mode === 'signup' ? 'Create account' : 'Log in'}
+            </button>
+          </form>
+
+          <div className="divider">or</div>
+          <button className="google-button" type="button" onClick={handleGoogleSignIn} disabled={loading}>
+            <GoogleIcon />
+            Sign in with Google
+          </button>
+
+          {error && <p className="error" role="alert">{error}</p>}
+        </section>
+      )}
+    </main>
+  )
+}
+
+export default App
+
+App.css:
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+
+
+main.jsx:
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+index.css:
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+
+auth.css:
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1f2937;
+  background: #f4f7fc;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #f4f7fc;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page {
+  display: grid;
+  min-height: 100vh;
+  padding: 20px;
+  place-items: center;
+}
+
+.card {
+  width: min(100%, 380px);
+  padding: 28px;
+  border: 1px solid #e1e7f0;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 8px 24px rgb(31 54 92 / 8%);
+}
+
+.task-card {
+  width: min(100%, 600px);
+}
+
+h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 24px;
+}
+
+.signin-card h1,
+.signin-card > .description {
+  text-align: center;
+}
+
+.description {
+  margin: 8px 0 20px;
+  color: #68758b;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border-radius: 5px;
+  background: #f1f4f9;
+}
+
+.mode-switch button,
+.small-button {
+  padding: 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #536176;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.mode-switch .selected {
+  background: white;
+  color: #245fc5;
+  box-shadow: 0 1px 3px rgb(31 54 92 / 12%);
+}
+
+.account-form,
+.task-form {
+  display: grid;
+  gap: 12px;
+}
+
+.account-form label,
+.task-form label {
+  display: grid;
+  gap: 5px;
+  color: #364152;
+  font-size: 13px;
+}
+
+.account-form input,
+.task-input-row input {
+  width: 100%;
+  height: 39px;
+  padding: 0 9px;
+  border: 1px solid #d6deea;
+  border-radius: 5px;
+  color: #1f2937;
+}
+
+input:focus {
+  border-color: #3977dc;
+  outline: 2px solid #dce9ff;
+}
+
+.button,
+.google-button,
+.small-button {
+  min-height: 38px;
+  border: 1px solid #2864d7;
+  border-radius: 5px;
+  background: #2864d7;
+  color: white;
+  cursor: pointer;
+}
+
+.button {
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+.button:hover,
+.google-button:hover {
+  background: #1e52ba;
+}
+
+.button:disabled,
+.google-button:disabled,
+.small-button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.google-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-color: #d6deea;
+  background: white;
+  color: #26344a;
+  font-size: 13px;
+}
+
+.google-button:hover {
+  background: #f6f8fc;
+}
+
+.google-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
+  color: #8290a4;
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  height: 1px;
+  flex: 1;
+  background: #e5eaf1;
+  content: '';
+}
+
+.error {
+  margin: 14px 0 0;
+  padding: 9px 10px;
+  border: 1px solid #f2cdcd;
+  border-radius: 5px;
+  background: #fff6f6;
+  color: #a42e2e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.card-heading .description {
+  margin-bottom: 0;
+}
+
+.small-button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-color: #d6deea;
+  background: white;
+  color: #2864d7;
+  white-space: nowrap;
+}
+
+.small-button:hover {
+  background: #f6f8fc;
+}
+
+.task-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.task-input-row .button {
+  min-width: 70px;
+}
+
+.task-list {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #e1e7f0;
+  border-radius: 5px;
+  color: #364152;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.task-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 5px;
+}
+
+.delete-button {
+  color: #a42e2e;
+}
+
+.empty-message {
+  margin: 20px 0 0;
+  color: #68758b;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding: 22px 18px;
+  }
+}
+
+
+src-assets,app.jsx,app.css,main.ksx,auth.css,index.css
+assets-firebase.js,auth.jsx
+

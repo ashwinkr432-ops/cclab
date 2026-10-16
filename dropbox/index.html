@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Dropbox File Manager</title>
+  </head>
+  <body>
+    <h2>Dropbox File Upload and Download</h2>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" required />
+      <button type="submit">Upload File</button>
+    </form>
+
+    <h3>Files in Dropbox</h3>
+
+    {% for file in files %}
+    <p>
+      {{ file.name }}
+      <a href="{{ url_for('download', name=file.name) }}">
+        <button type="button">Download</button>
+      </a>
+    </p>
+    {% else %}
+    <p>No files found.</p>
+    {% endfor %}
+  </body>
+</html>
